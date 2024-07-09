@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EDA Results</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .footer-bar {
+            position: fixed;
+            left: 0;
+            bottom: 0;
+            width: 100%;
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 10px 0;
+        }
+        .footer-bar input, .footer-bar label {
+            margin: 5px;
+        }
+        .footer-bar input[type="number"], .footer-bar input[type="submit"] {
+            color: black; /* Text color for input fields */
+        }
+        .footer-bar input[type="submit"] {
+            background-color: #4CAF50; /* Green */
+            border: none;
+            padding: 10px 20px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
+            cursor: pointer;
+        }
+        .container {
+            padding-bottom: 60px; /* Extra space for fixed footer */
+        }
+        .logo {
+            height: 100px; /* Adjust the size as needed */
+            margin-right: 20px;
+            margin-left: 20px;
+        }
+        .header-text {
+            text-align: center;
+            font-size: 1.2em;
+            margin-top: 10px;
+        }
+        .sub-header-text {
+            text-align: center;
+            font-size: 1em;
+            margin-top: 20px;
+            margin-bottom: 50px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="row justify-content-center mb-2">
+            <img src="{{url_for('static', filename='LOGO01_nxpo.png')}}" alt="Logo 1" class="logo">
+            <img src="{{url_for('static', filename='LOGO02.png')}}" alt="Logo 2" class="logo">
+            <img src="{{url_for('static', filename='LogoKKU_thai.png')}}" alt="Logo 3" class="logo">
+        </div>
+        <!-- Thai Sentence -->
+        <div class="header-text">
+            โครงการการพัฒนาตัวแบบเชิงคณิตศาสตร์และการหาค่าเหมาะสมที่สุดสำหรับกระบวนการเรียนรู้ของโครงข่ายประสาทเทียมและการประยุกต์ใช้
+        </div>
+        <p></p> 
+
+        <div class="sub-header-text">
+            ภายใต้แผนงานการริเริ่มการวิจัยขั้นแนวหน้าประเทศไทย <br/>
+            โปรแกรมที่ 5 ส่งเสริมการวิจัยขั้นแนวหน้าและการวิจัยพื้นฐานที่ประเทศไทยมีศักยภาพ  <br/>
+            ประจำปีงบประมาณ 2565
+        </div>    
+        <p></p>    
+        <p></p> 
+
+
+        <h2 class="text-center my-4">Exploratory Data Analysis</h2>
+        <div>{{ eda_report|safe }}</div>
+    </div>
+
+    <div class="footer-bar">
+        <form action="/training_results" method="post">
+            <label for="split">Test Split Proportion (0.0 - 1.0):</label>
+            <input type="number" id="split" name="split" step="0.05" min="0.0" max="1.0" value="0.2" style="color: black;">
+            <input type="submit" value="Train model and measure performance">
+        </form>
+    </div>
+
+    <!-- Bootstrap JS and Popper.js -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+</body>
+</html>

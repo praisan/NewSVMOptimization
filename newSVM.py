@@ -1,3 +1,7 @@
+import time
+import numpy as np
+import pandas as pd
+from sklearn.base import TransformerMixin,BaseEstimator
 from sklearn.base import TransformerMixin,BaseEstimator
 class NewSVM(TransformerMixin,BaseEstimator):
 
@@ -12,7 +16,7 @@ class NewSVM(TransformerMixin,BaseEstimator):
         d, m = Xtrain.shape
         print('Xtrain.shape',Xtrain.shape )
         print('Ytrain.shape',Ytrain.shape )
-        
+
 
         # define hyperparameter
         geval_limit = 1e6;
@@ -24,22 +28,22 @@ class NewSVM(TransformerMixin,BaseEstimator):
         lambda2 = 0.5
 
         # output variable
-        maxidx = len(taubar_arr) + 2
+        maxidx = len(taubar_arr)
         hinge = np.zeros((maxidx, maxitr))
         acc = np.zeros((maxidx, maxitr))
-        geval = np.zeros((maxidx, maxitr))
+        # geval = np.zeros((maxidx, maxitr))
         itr_flag = np.zeros((maxidx, time_limit))
-        runtimes = np.zeros((len(taubar_arr)))
-        results = pd.DataFrame({"taubar": taubar_arr, "niter": [0]*len(taubar_arr), "hinge": [0]*len(taubar_arr), "acc": [0]*len(taubar_arr), "time": [0]*len(taubar_arr), "TP": [0]*len(taubar_arr), "TN": [0]*len(taubar_arr), "FP": [0]*len(taubar_arr), "FN": [0]*len(taubar_arr)})
+        runtimes = np.zeros((maxidx))
+        # results = pd.DataFrame({"taubar": taubar_arr, "niter": [0]*maxidx, "hinge": [0]*maxidx, "acc": [0]*maxidx, "time": [0]*maxidx, "TP": [0]*maxidx, "TN": [0]*maxidx, "FP": [0]*maxidx, "FN": [0]*maxidx})
 
-        for idx in range(len(taubar_arr)):
+        for idx in range(maxidx):
 
             tau_max = taubar_arr[idx]
-            print("r = %d tau_bar = %d\n"%(self.r, tau_max))
+            # print("r = %d tau_bar = %d\n"%(self.r, tau_max))
 
             grad = np.zeros((1, d))
             self.w = np.zeros((d, 1))
-            grad_num = 0
+            # grad_num = 0
 
             st = time.time()
             # start the algorithm
@@ -58,7 +62,7 @@ class NewSVM(TransformerMixin,BaseEstimator):
                 for i in range(m+2):
                     if (k % (tau_max + 1) == 0) | (tau_max == 0):
                         grad = np.zeros((1, d))
-                        grad_num = grad_num + 1
+                        # grad_num = grad_num + 1
 
                         if i + 1 <= m: # subgradient of generalized hinge loss
                             if Ytrain[:,i].dot(Xtrain[:,i].dot(self.w)) <= 0:
@@ -91,11 +95,15 @@ class NewSVM(TransformerMixin,BaseEstimator):
 
                 hinge[idx, k+1] = self.general_hinge_loss(Xtrain, Ytrain, self.r)/m
                 acc[idx, k+1] = (self.classify(Xtrain)==Ytrain).sum()/m
-                geval[idx, k+1] = grad_num
+                # geval[idx, k+1] = grad_num
                 self.w = w_next
             evaltime = time.time() - st
             runtimes[idx] = evaltime
-            print(" nitr = %d hinge = %.6f time = %.6f\n"%(k, hinge[idx, k],runtimes[idx]))
+            # print(" nitr = %d hinge = %.6f time = %.6f\n"%(k, hinge[idx, k],runtimes[idx]))
+        self.hinge=hinge
+        self.acc=acc
+        self.runtimes=runtimes
+        self.taubar_arr=taubar_arr
         return self
 
     def general_hinge_loss(self,X, Y, r):

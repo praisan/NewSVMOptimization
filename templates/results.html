@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Model Results</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        .fixed-bottom-button {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            text-align: center;
+            padding: 10px 0;
+            background-color: #f8f9fa; /* Light gray background */
+        }
+        .container {
+            padding-bottom: 60px; /* Extra space to ensure content is not hidden behind the fixed button */
+        }
+
+        .footer-bar {
+            position: fixed;
+            left: 0;
+            bottom: 0;
+            width: 100%;
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 10px 0;
+        }
+        .footer-bar input, .footer-bar label {
+            margin: 5px;            
+        }
+        .footer-bar a {
+            background-color: #4CAF50; /* Green */
+            border: none;
+            color: white;
+            padding: 10px 20px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
+            cursor: pointer;
+        }
+        .logo {
+            height: 100px; /* Adjust the size as needed */
+            margin-right: 20px;
+            margin-left: 20px;
+        }
+        .header-text {
+            text-align: center;
+            font-size: 1.2em;
+            margin-top: 10px;
+        }
+        .sub-header-text {
+            text-align: center;
+            font-size: 1em;
+            margin-top: 20px;
+            margin-bottom: 50px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="row justify-content-center mb-2">
+            <img src="{{url_for('static', filename='LOGO01_nxpo.png')}}" alt="Logo 1" class="logo">
+            <img src="{{url_for('static', filename='LOGO02.png')}}" alt="Logo 2" class="logo">
+            <img src="{{url_for('static', filename='LogoKKU_thai.png')}}" alt="Logo 3" class="logo">
+        </div>
+        <!-- Thai Sentence -->
+        <div class="header-text">
+            โครงการการพัฒนาตัวแบบเชิงคณิตศาสตร์และการหาค่าเหมาะสมที่สุดสำหรับกระบวนการเรียนรู้ของโครงข่ายประสาทเทียมและการประยุกต์ใช้
+        </div>
+        <p></p> 
+
+        <div class="sub-header-text">
+            ภายใต้แผนงานการริเริ่มการวิจัยขั้นแนวหน้าประเทศไทย <br/>
+            โปรแกรมที่ 5 ส่งเสริมการวิจัยขั้นแนวหน้าและการวิจัยพื้นฐานที่ประเทศไทยมีศักยภาพ  <br/>
+            ประจำปีงบประมาณ 2565
+        </div>    
+        <p></p>    
+        <p></p> 
+
+        <h2>Model Training and Testing Details</h2>
+        <p>All data: {{ total_size }} sample with {{ n_feature }}  features</p>
+        <!-- <p>Train Set Size: {{ train_size }} ({{ train_percent }}% of total)</p>
+        <p>Test Set Size: {{ test_size }} ({{ test_percent }}% of total)</p> --> 
+            
+        <div>{{ data_split_plot|safe }}</div>
+        <h3>Data sample</h3>
+        <div>{{ df_head|safe }}</div>  
+
+        <h2>Evaluation performance</h2>
+        <div>{{ confusion_matrix_plot|safe }}</div>
+<!-- 
+        <h2>Training results</h2>
+        <div class="container mt-4">
+            <table class="table table-bordered table-striped table-hover">
+                <thead class="thead-dark">
+                    <tr>
+                        <th></th>
+                        <th>niter</th>
+                        <th>hinge</th>
+                        <th>acc</th>
+                        <th>time</th>
+                        <th>TP</th>
+                        <th>TN</th>
+                        <th>FP</th>
+                        <th>FN</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>0</td>
+                        <td>3127</td>
+                        <td>0.977671</td>
+                        <td>100</td>
+                        <td>10.002599</td>
+                        <td>12</td>
+                        <td>8</td>
+                        <td>0</td>
+                        <td>0</td>
+                    </tr>
+                    <tr>
+                        <td>1</td>
+                        <td>6179</td>
+                        <td>0.989082</td>
+                        <td>100</td>
+                        <td>10.000926</td>
+                        <td>12</td>
+                        <td>8</td>
+                        <td>0</td>
+                        <td>0</td>
+                    </tr>
+                    <tr>
+                        <td>2</td>
+                        <td>6442</td>
+                        <td>0.995308</td>
+                        <td>100</td>
+                        <td>10.001159</td>
+                        <td>12</td>
+                        <td>8</td>
+                        <td>0</td>
+                        <td>0</td>
+                    </tr>
+                    <tr>
+                        <td>5</td>
+                        <td>7598</td>
+                        <td>0.999247</td>
+                        <td>100</td>
+                        <td>10.000884</td>
+                        <td>12</td>
+                        <td>8</td>
+                        <td>0</td>
+                        <td>0</td>
+                    </tr>
+                    <tr>
+                        <td>10</td>
+                        <td>10044</td>
+                        <td>0.999889</td>
+                        <td>100</td>
+                        <td>10.000067</td>
+                        <td>12</td>
+                        <td>8</td>
+                        <td>0</td>
+                        <td>0</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div> -->
+        <h2>Training accuracy</h2>
+        <div>{{ training_accuracy_plot|safe }}</div>
+
+        <h2>Training hinge</h2>
+        <div>{{ training_hinge_plot|safe }}</div>
+
+        <h2>Runtimes</h2>
+        <div>{{ runtimes_plot|safe }}</div>
+        
+       
+    </div>
+
+    <div class="footer-bar">
+        <a href="/">Back to Home</a>
+        <a href="{{ url_for('download_model', filename=model_filename) }}" class="btn btn-success">Download the Trained Model</a>
+    </div>
+
+    <!-- Bootstrap JS and Popper.js -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+</body>
+
+</html>

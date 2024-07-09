@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Training in Progress</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        /* ... (your existing styles) ... */
+
+        #progressBar {
+            width: 80%;
+            height: 20px;
+            background-color: #ddd;
+            border-radius: 5px;
+            overflow: hidden;
+            margin-bottom: 20px; /* Add some spacing below the progress bar */
+        }
+
+        #progressBar::before {
+            /* ... (same animation styles as before) ... */
+        }
+
+        .progress-container {
+            text-align: center; /* Center the progress bar and text */
+        }
+    </style>
+</head>
+<body>
+    <div class="container mt-4 text-center">
+        <!-- Logo Area -->
+        <div class="row justify-content-center mb-2">
+            <img src="{{url_for('static', filename='LOGO01_nxpo.png')}}" alt="Logo 1" class="logo">
+            <img src="{{url_for('static', filename='LOGO02.png')}}" alt="Logo 2" class="logo">
+            <img src="{{url_for('static', filename='LogoKKU_thai.png')}}" alt="Logo 3" class="logo">
+        </div>
+        <!-- Thai Sentence -->
+        <div class="header-text">
+            โครงการการพัฒนาตัวแบบเชิงคณิตศาสตร์และการหาค่าเหมาะสมที่สุดสำหรับกระบวนการเรียนรู้ของโครงข่ายประสาทเทียมและการประยุกต์ใช้
+        </div>
+        <p></p> 
+
+        <div class="sub-header-text">
+            ภายใต้แผนงานการริเริ่มการวิจัยขั้นแนวหน้าประเทศไทย <br/>
+            โปรแกรมที่ 5 ส่งเสริมการวิจัยขั้นแนวหน้าและการวิจัยพื้นฐานที่ประเทศไทยมีศักยภาพ  <br/>
+            ประจำปีงบประมาณ 2565
+        </div>  
+        <p></p>
+
+        <div class="progress-container">
+            <h1>Training in Progress</h1>
+            <div id="progressBar"></div>
+            <p>Please wait while the model is being trained. This may take a few minutes.</p>
+        </div>
+    </div>
+    <!-- Bootstrap JS and Popper.js -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    
+    <script>
+        // Function to check if the training is done and redirect
+        function checkTrainingStatus() {
+            fetch('/training_results') // Or use a specific route to check training status
+                .then(response => {
+                    if (response.status === 200) { // Training finished
+                        window.location.href = '/training_results'; // Redirect
+                    } else {
+                        setTimeout(checkTrainingStatus, 3000); // Check again in 3 seconds
+                    }
+                });
+        }
+
+        // Start checking the training status
+        checkTrainingStatus(); 
+    </script>
+</body>
+</html>

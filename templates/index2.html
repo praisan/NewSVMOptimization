@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upload CSV File</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .container {
+            padding-top: 50px;
+        }
+        .custom-file-upload {
+            margin-top: 20px;
+        }
+        .logo {
+            height: 100px; /* Adjust the size as needed */
+            margin-right: 20px;
+            margin-left: 20px;
+        }
+        .header-text {
+            font-size: 1.2em;
+            margin-top: 10px;
+        }
+        .sub-header-text {
+            font-size: 1em;
+            margin-top: 20px;
+            margin-bottom: 50px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container mt-4 text-center">
+        <!-- Logo Area -->
+        <div class="row justify-content-center mb-2">
+            <img src="{{url_for('static', filename='LOGO01_nxpo.png')}}" alt="Logo 1" class="logo">
+            <img src="{{url_for('static', filename='LOGO02.png')}}" alt="Logo 2" class="logo">
+            <img src="{{url_for('static', filename='LogoKKU_thai.png')}}" alt="Logo 3" class="logo">
+        </div>
+        <!-- Thai Sentence -->
+        <div class="header-text">
+            โครงการการพัฒนาตัวแบบเชิงคณิตศาสตร์และการหาค่าเหมาะสมที่สุดสำหรับกระบวนการเรียนรู้ของโครงข่ายประสาทเทียมและการประยุกต์ใช้
+        </div>
+        <p></p> 
+
+        <div class="sub-header-text">
+            ภายใต้แผนงานการริเริ่มการวิจัยขั้นแนวหน้าประเทศไทย <br/>
+            โปรแกรมที่ 5 ส่งเสริมการวิจัยขั้นแนวหน้าและการวิจัยพื้นฐานที่ประเทศไทยมีศักยภาพ  <br/>
+            ประจำปีงบประมาณ 2565
+        </div>    
+        <p></p>    
+        <p></p> 
+        
+        <div class="sub-header-text" style="text-align: left;">
+            Upload CSV File for model training
+        </div>
+        <form action="/upload-csv" method="post" enctype="multipart/form-data" class="custom-file-upload">
+            <div class="custom-file mb-3">
+                <input type="file" class="custom-file-input" id="file" name="file" required>
+                <label class="custom-file-label" for="file">Choose file...</label>
+            </div>
+            <div class="form-check mb-3">
+                <input type="checkbox" class="form-check-input" id="headerCheck" name="header">
+                <label class="form-check-label" for="headerCheck">First line as header</label>
+            </div>
+            <button type="submit" class="btn btn-primary">Upload and Analyze</button>
+        </form>
+    </div>
+
+    <!-- Bootstrap JS and Popper.js -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
+    <script>
+        // Update the text of the custom file label to the selected filename
+        $(".custom-file-input").on("change", function() {
+            var fileName = $(this).val().split("\\").pop();
+            $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
+        });
+    </script>
+    <p></p> 
+    <p></p> 
+</body>
+</html>
