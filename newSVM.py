@@ -2,7 +2,9 @@ import time
 import numpy as np
 import pandas as pd
 from sklearn.base import TransformerMixin,BaseEstimator
-from sklearn.base import TransformerMixin,BaseEstimator
+from plotly.io import to_html
+import plotly.graph_objs as go
+
 class NewSVM(TransformerMixin,BaseEstimator):
 
     def __init__(self,alpha0=0.4,a=0.6,r=100):
@@ -10,12 +12,13 @@ class NewSVM(TransformerMixin,BaseEstimator):
       self.a=a
       self.r=r
 
-    def fit(self, Xtrain, Ytrain, verbose=True):
+    def fit(self, Xtrain, Ytrain, verbose=True,progress_callback=None):
         Xtrain=Xtrain.T
         Ytrain=Ytrain.T[np.newaxis, :]
         d, m = Xtrain.shape
-        print('Xtrain.shape',Xtrain.shape )
-        print('Ytrain.shape',Ytrain.shape )
+        if verbose:
+            print('Xtrain.shape',Xtrain.shape )
+            print('Ytrain.shape',Ytrain.shape )
 
 
         # define hyperparameter
@@ -39,7 +42,7 @@ class NewSVM(TransformerMixin,BaseEstimator):
         for idx in range(maxidx):
 
             tau_max = taubar_arr[idx]
-            # print("r = %d tau_bar = %d\n"%(self.r, tau_max))
+            if verbose: print("r = %d tau_bar = %d\n"%(self.r, tau_max))
 
             grad = np.zeros((1, d))
             self.w = np.zeros((d, 1))
@@ -99,7 +102,10 @@ class NewSVM(TransformerMixin,BaseEstimator):
                 self.w = w_next
             evaltime = time.time() - st
             runtimes[idx] = evaltime
-            # print(" nitr = %d hinge = %.6f time = %.6f\n"%(k, hinge[idx, k],runtimes[idx]))
+            if verbose: print(" nitr = %d hinge = %.6f time = %.6f\n"%(k, hinge[idx, k],runtimes[idx]))
+            if progress_callback:  # Check if a callback is provided
+                progress = (idx*maxitr+k) / (maxidx*maxitr)  
+                progress_callback(progress)  # Call the callback
         self.hinge=hinge
         self.acc=acc
         self.runtimes=runtimes
@@ -142,3 +148,38 @@ class NewSVM(TransformerMixin,BaseEstimator):
 
     def classify(self,X):
         return np.where(self.predict(X.T) >= 0.0, 1, -1)
+    
+def data_split_plot(train_size,test_size):
+    fig = go.Figure(data=[
+        go.Bar(name='Train Set', y=[''], x=[train_size], orientation='h', marker_color='skyblue'),
+        go.Bar(name='Evaluation Set', y=[''], x=[test_size], orientation='h', marker_color='lightcoral')
+    ])
+
+    fig.update_layout(
+        barmode='stack',
+        title_text='Train/Evaluation Split',
+        xaxis_title="Number of Samples",
+        yaxis_title="Dataset",
+    ) 
+    return fig
+
+def cm_plot(cm):
+    labels = ["Class 0", "Class 1"]
+    fig = go.Figure(data=go.Heatmap(
+        z=cm, x=labels, y=labels,
+        hoverongaps=False, colorscale="Blues"  
+        ))
+    for i in range(len(cm)):
+        for j in range(len(cm)):
+            fig.add_annotation(
+                x=labels[i], y=labels[j],
+                text=str(cm[i][j]),
+                showarrow=False,
+                font=dict(color="white" if cm[i][j] > np.max(cm)/2 else "black")  # Set text color based on cell value
+    )
+            fig.update_layout(
+                xaxis_title="Predicted Label",
+                yaxis_title="True Label",
+                xaxis=dict(tickmode='linear'), 
+                yaxis=dict(tickmode='linear'))
+    return fig

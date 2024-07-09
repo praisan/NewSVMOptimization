@@ -92,84 +92,12 @@
         <h3>Data sample</h3>
         <div>{{ df_head|safe }}</div>  
 
-        <h2>Evaluation performance</h2>
+        <h2>Test performance</h2>
         <div>{{ confusion_matrix_plot|safe }}</div>
-<!-- 
-        <h2>Training results</h2>
-        <div class="container mt-4">
-            <table class="table table-bordered table-striped table-hover">
-                <thead class="thead-dark">
-                    <tr>
-                        <th></th>
-                        <th>niter</th>
-                        <th>hinge</th>
-                        <th>acc</th>
-                        <th>time</th>
-                        <th>TP</th>
-                        <th>TN</th>
-                        <th>FP</th>
-                        <th>FN</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>0</td>
-                        <td>3127</td>
-                        <td>0.977671</td>
-                        <td>100</td>
-                        <td>10.002599</td>
-                        <td>12</td>
-                        <td>8</td>
-                        <td>0</td>
-                        <td>0</td>
-                    </tr>
-                    <tr>
-                        <td>1</td>
-                        <td>6179</td>
-                        <td>0.989082</td>
-                        <td>100</td>
-                        <td>10.000926</td>
-                        <td>12</td>
-                        <td>8</td>
-                        <td>0</td>
-                        <td>0</td>
-                    </tr>
-                    <tr>
-                        <td>2</td>
-                        <td>6442</td>
-                        <td>0.995308</td>
-                        <td>100</td>
-                        <td>10.001159</td>
-                        <td>12</td>
-                        <td>8</td>
-                        <td>0</td>
-                        <td>0</td>
-                    </tr>
-                    <tr>
-                        <td>5</td>
-                        <td>7598</td>
-                        <td>0.999247</td>
-                        <td>100</td>
-                        <td>10.000884</td>
-                        <td>12</td>
-                        <td>8</td>
-                        <td>0</td>
-                        <td>0</td>
-                    </tr>
-                    <tr>
-                        <td>10</td>
-                        <td>10044</td>
-                        <td>0.999889</td>
-                        <td>100</td>
-                        <td>10.000067</td>
-                        <td>12</td>
-                        <td>8</td>
-                        <td>0</td>
-                        <td>0</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div> -->
+
+        <h2>Test ROC</h2>
+        <div>{{ roc_plot_html|safe }}</div>
+
         <h2>Training accuracy</h2>
         <div>{{ training_accuracy_plot|safe }}</div>
 
