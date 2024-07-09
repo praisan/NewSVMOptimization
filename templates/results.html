@@ -51,14 +51,19 @@
         }
         .header-text {
             text-align: center;
-            font-size: 1.2em;
+            font-size: 1.5em;
             margin-top: 10px;
         }
         .sub-header-text {
             text-align: center;
-            font-size: 1em;
+            font-size: 1.2em;
             margin-top: 20px;
             margin-bottom: 50px;
+        }
+        .topic {
+            text-align: left;
+            font-size: 1.5em;
+            margin-top: 10px;
         }
     </style>
 </head>
@@ -83,28 +88,29 @@
         <p></p>    
         <p></p> 
 
-        <h2>Model Training and Testing Details</h2>
+        <div class="topic">Model Training and Testing Details</div>
         <p>All data: {{ total_size }} sample with {{ n_feature }}  features</p>
         <!-- <p>Train Set Size: {{ train_size }} ({{ train_percent }}% of total)</p>
         <p>Test Set Size: {{ test_size }} ({{ test_percent }}% of total)</p> --> 
             
         <div>{{ data_split_plot|safe }}</div>
-        <h3>Data sample</h3>
+
+        <div class="topic">Data sample</div>
         <div>{{ df_head|safe }}</div>  
 
-        <h2>Test performance</h2>
+        <div class="topic">Test performance</div>
         <div>{{ confusion_matrix_plot|safe }}</div>
 
-        <h2>Test ROC</h2>
-        <div>{{ roc_plot_html|safe }}</div>
+        <!-- <div class="topic">Test ROC</div>
+        <div>{{ roc_plot_html|safe }}</div> -->
 
-        <h2>Training accuracy</h2>
+        <div class="topic">Training accuracy</div>
         <div>{{ training_accuracy_plot|safe }}</div>
 
-        <h2>Training hinge</h2>
+        <div class="topic">Training hinge</div>
         <div>{{ training_hinge_plot|safe }}</div>
 
-        <h2>Runtimes</h2>
+        <div class="topic">Runtimes</div>
         <div>{{ runtimes_plot|safe }}</div>
         
        

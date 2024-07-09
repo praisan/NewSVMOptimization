@@ -183,3 +183,36 @@ def cm_plot(cm):
                 xaxis=dict(tickmode='linear'), 
                 yaxis=dict(tickmode='linear'))
     return fig
+
+def roc_plot(fpr,tpr):
+    roc_fig = go.Figure()
+    roc_fig.add_trace(go.Scatter(x=fpr, y=tpr, mode='lines', name='ROC Curve'))
+    roc_fig.add_trace(go.Scatter(x=[0, 1], y=[0, 1], mode='lines', line=dict(dash='dash'), name='Random'))
+    roc_fig.update_layout(xaxis_title='False Positive Rate', yaxis_title='True Positive Rate')
+    return roc_fig
+
+def runtimes_plot(newSVM):
+    fig = go.Figure()
+    fig.add_trace(go.Bar(
+        x=[str(a) for a in newSVM.taubar_arr],
+        y=newSVM.runtimes,
+        name='Runtimes',
+        marker_color='rgb(55, 83, 109)'))
+    fig.update_layout(xaxis_title='delay', yaxis_title='Time (seconds)')
+    return fig
+
+def hinge_plot(newSVM):
+    fig = go.Figure()
+    for i in range(len(newSVM.taubar_arr)):
+        hinge=newSVM.hinge[i,newSVM.hinge[i,:]>0]
+        fig.add_trace(go.Scatter(x=list(range(hinge.shape[0])), y=hinge, name=f"delay {newSVM.taubar_arr[i]}"))
+    fig.update_layout(xaxis_title="Iteration", yaxis_title="hinge",)
+    return fig
+
+def accuracy_plot(newSVM):
+    fig = go.Figure()
+    for i in range(len(newSVM.taubar_arr)):
+        acc=newSVM.acc[i,newSVM.acc[i,:]>0]
+        fig.add_trace(go.Scatter(x=list(range(acc.shape[0])), y=acc, name=f"delay {newSVM.taubar_arr[i]}"))
+    fig.update_layout(xaxis_title="Iteration", yaxis_title="Accuracy",)
+    return fig

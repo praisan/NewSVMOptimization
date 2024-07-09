@@ -6,7 +6,7 @@ from forms import MyForm
 from flask_uploads import configure_uploads, UploadSet, DATA
 import pandas as pd
 from sklearn.model_selection import train_test_split
-from sklearn.metrics import confusion_matrix
+from sklearn.metrics import confusion_matrix,roc_curve
 from ydata_profiling import ProfileReport
 import io
 from plotly.io import to_html
@@ -14,7 +14,7 @@ import plotly.graph_objs as go
 from summarytools import dfSummary
 from joblib import dump
 import os
-from newSVM import NewSVM,data_split_plot,cm_plot
+from newSVM import NewSVM, accuracy_plot,data_split_plot,cm_plot, hinge_plot, roc_plot, runtimes_plot
 
 
 
@@ -161,49 +161,12 @@ def next_page():
         cm_plot_html=to_html(cm_plot(cm),full_html=False) 
 
         # # Generate ROC Curve Plot
-        fpr, tpr, _ = roc_curve(y_test, y_pred.T)
-        # roc_auc = auc(fpr, tpr)
-        roc_fig = go.Figure()
-        roc_fig.add_trace(go.Scatter(x=fpr, y=tpr, mode='lines', name='ROC Curve'))
-        roc_fig.add_trace(go.Scatter(x=[0, 1], y=[0, 1], mode='lines', line=dict(dash='dash'), name='Random'))
-        roc_fig.update_layout(xaxis_title='False Positive Rate', yaxis_title='True Positive Rate')
-        roc_plot_html = to_html(roc_fig, full_html=False)
+        # fpr, tpr, _ = roc_curve(y_test, y_pred.T)        
+        # roc_plot_html = to_html(roc_plot(fpr,tpr), full_html=False)
+        runtimes_plot_html = to_html(runtimes_plot(newSVM), full_html=False)        
+        hinge_plot_html = to_html(hinge_plot(newSVM), full_html=False)
+        accuracy_plot_html = to_html(accuracy_plot(newSVM), full_html=False)
 
-        fig = go.Figure()
-        fig.add_trace(go.Bar(
-            x=[str(a) for a in newSVM.taubar_arr],
-            y=newSVM.runtimes,
-            name='Runtimes',
-            marker_color='rgb(55, 83, 109)'))
-        fig.update_layout(
-            # title='Runtimes',
-            xaxis_title='delay',
-            yaxis_title='Time (seconds)')
-        runtimes_plot_html = to_html(fig, full_html=False)
-
-        fig = go.Figure()
-        # Add traces for each row in the acc array
-        for i in range(len(newSVM.taubar_arr)):
-            hinge=newSVM.hinge[i,newSVM.hinge[i,:]>0]
-            fig.add_trace(go.Scatter(x=list(range(hinge.shape[0])), y=hinge, name=f"delay {newSVM.taubar_arr[i]}"))
-        fig.update_layout(
-            # title="hinge for each row in the acc array",
-            xaxis_title="Iteration",
-            yaxis_title="hinge",)
-        hinge_plot_html = to_html(fig, full_html=False)
-
-        fig = go.Figure()
-        for i in range(len(newSVM.taubar_arr)):
-            acc=newSVM.acc[i,newSVM.acc[i,:]>0]
-            fig.add_trace(go.Scatter(x=list(range(acc.shape[0])), y=acc, name=f"delay {newSVM.taubar_arr[i]}"))
-        fig.update_layout(
-            # title="Accuracy for each row in the acc array",
-            xaxis_title="Iteration",
-            yaxis_title="Accuracy",)
-        accuracy_plot_html = to_html(fig, full_html=False)
-
-        # Render the confusion matrix on a new page (can also convert cm to HTML table)
-        # return render_template('results.html', confusion_matrix_plot=cm_plot_html, roc_curve_plot=roc_plot_html)
         return render_template('results.html', 
                             confusion_matrix_plot=cm_plot_html,
                             runtimes_plot=runtimes_plot_html, 
@@ -211,7 +174,7 @@ def next_page():
                             training_accuracy_plot=accuracy_plot_html,
                             data_split_plot=data_split_plot_html,
                             df_head=df_head_html,
-                            roc_curve_plot=roc_plot_html,
+                            # roc_curve_plot=roc_plot_html,
                             train_size=train_size, 
                             test_size=test_size,
                             total_size=train_size+test_size,
